@@ -13,3 +13,8 @@ Adjusting rapid charge modes - 1: on, 2: off
 
 ## Dependencies
 Depending on your system, either `acpi_call`, `acpi_call-lts`, `acpi_call-dkms`. 
+
+## Running the Script
+The script requires superuser elevations. To run the script, run `sudo ./utils.sh` in the script's directory. If this does not work, ensure it is an exectuable by running `chmod +w utils.sh`. Without any flags, the program should display an error message if the kernel module is not installed and loaded. Note that the module can be loaded after install with `sudo modprobe acpi_call`.  Otherwise, it will present a help message.
+
+## Script Usage and Parameters
