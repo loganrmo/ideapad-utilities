@@ -29,7 +29,6 @@ function printHelp() {
   echo "LENOVO IDEAPAD UTILITIES"
   echo "Access Lenovo Vantage features from Linux with this CLI tool."
   echo "Please ensure the acpi_call kernel module is installed and loaded."
-  echo "To access this message, use the -h flag."
   echo ""
   echo "Options:"
   echo "To change performance mode, use the -p flag followed by one of these options:"
@@ -60,6 +59,7 @@ function performanceMode() {
   else
     echo "Error: Performance mode parameter incorrect"
   fi
+  checkPerfMode
 }
 
 function checkPerfMode() {
@@ -77,6 +77,7 @@ function rapidChargeMode() {
   else
     echo "Error: Rapid Charge mode parameter incorrect"
   fi
+  checkRapidChargeMode
 }
 
 function checkRapidChargeMode() {
@@ -84,38 +85,18 @@ function checkRapidChargeMode() {
   cat /proc/acpi/call | cut -d '' -f1
 }
 
+# MAIN
 
-# ALSO HAVE INTERACTIVE PROMPT WITH HELP FUNCTION?
-# SCRIPT START
-# p - 1, 2, 3
-
-# Gets flags
-while getopts p:r:h:c FLAG
+while getopts p:r FLAG
 do
   case "$FLAG" in
-  p) PERFOPTION=${OPTARG};;
-  r) RAPOPTION=${OPTARG};;
-  h) OPTION=${OPTARG};;
+    p) PERFOPTION=${OPTARG};;
+    r) RAPOPTION=${OPTARG};;
+    \?) help; exit 1;;
   esac
 done
 
-# Checks for a lack of flags or a help flag
-if [ "$OPTION" == "" ]
-then
-  checkModule
-  echo ""
-  printHelp
-else
-  echo "Bruh"
-fi
+checkModule
 
-# Now take flag parameters and apply them
-
-checkPerfMode
-checkRapidChargeMode
-# Introduce flags
-function main() {
-  read -p "Enter an option from 1 - 5: " OPTION
-
-  getCPU
-}
+echo "$PERFOPTION" > performanceMode
+echo "$RAPOPTION" > rapidChargeMode
